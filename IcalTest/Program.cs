@@ -64,6 +64,7 @@ class Program
 
         var ical = new Calendar();
         ical.Events.Add(icalEvent);
+        ical.AddTimeZone(TimeZoneInfo.Local);
 
         var serializer = new CalendarSerializer();
         Console.WriteLine(serializer.SerializeToString(ical));
