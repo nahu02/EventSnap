@@ -8,6 +8,11 @@ namespace ApiTest
     {
         private static async Task Main(string[] args)
         {
+            await NugetOpenAiApiTest();
+        }
+
+        private static async Task NugetOpenAiApiTest()
+        {
             var api = new OpenAIAPI(); // uses default, env, or config file
 
             api.HttpClientFactory = new LoggingHttpClientFactory(); // log all requests and responses
