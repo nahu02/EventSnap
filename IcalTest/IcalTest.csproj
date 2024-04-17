@@ -11,4 +11,8 @@
     <PackageReference Include="Ical.Net" Version="4.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\IcalCreator\IcalCreator.csproj" />
+  </ItemGroup>
+
 </Project>

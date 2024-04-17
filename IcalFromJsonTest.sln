@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IcalTest", "IcalTest\IcalTest.csproj", "{24658896-562E-46AB-B00D-DCE2EF75AA15}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IcalCreator", "IcalCreator\IcalCreator.csproj", "{12C1FF32-5B75-44F8-B04F-B86A665B1204}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{24658896-562E-46AB-B00D-DCE2EF75AA15}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24658896-562E-46AB-B00D-DCE2EF75AA15}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24658896-562E-46AB-B00D-DCE2EF75AA15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12C1FF32-5B75-44F8-B04F-B86A665B1204}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12C1FF32-5B75-44F8-B04F-B86A665B1204}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12C1FF32-5B75-44F8-B04F-B86A665B1204}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12C1FF32-5B75-44F8-B04F-B86A665B1204}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
