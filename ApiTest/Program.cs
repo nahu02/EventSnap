@@ -25,7 +25,7 @@ namespace ApiTest
                                      The events must be in a JSON format, and may include a Summary, a Start, an End, a Location and a Description.
                                      If the JSON includes a Start, it must also include an End.
                                      The JSON can be incomplete but must be a valid JSON object with at least one key-value pair.
-                                     You only ever respond with valid JSONs. You do not say anything else.");
+                                     You only ever respond with valid JSONs. You do not say anything else.
                                      """);
 
             chat.AppendUserInput("Tomorrow evening I have a meeting with John at 5pm at the office");
