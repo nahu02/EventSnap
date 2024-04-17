@@ -2,19 +2,19 @@
 using OpenAI_API.Chat;
 using OpenAI_API.Models;
 
-namespace ApiTest;
-
-class Program
+namespace ApiTest
+{
+    internal class Program
     {
-        static async Task Main(string[] args)
+        private static async Task Main(string[] args)
         {
-            OpenAIAPI api = new OpenAIAPI(); // uses default, env, or config file
-            
+            var api = new OpenAIAPI(); // uses default, env, or config file
+
             api.HttpClientFactory = new LoggingHttpClientFactory(); // log all requests and responses
-            
+
             var chat = api.Chat.CreateConversation();
             chat.RequestParameters.ResponseFormat = ChatRequest.ResponseFormats.JsonObject;
-            
+
             chat.Model = Model.GPT4_Turbo;
 
             chat.RequestParameters.Temperature = 0;
@@ -28,7 +28,6 @@ class Program
                                      You only ever respond with valid JSONs. You do not say anything else.");
                                      """);
 
-// give a few examples as user and assistant
             chat.AppendUserInput("Tomorrow evening I have a meeting with John at 5pm at the office");
             var tomorrow5Pm = DateTime.Now.AddDays(1).Date.AddHours(17);
             var tomorrow6Pm = DateTime.Now.AddDays(1).Date.AddHours(18);
@@ -53,21 +52,19 @@ class Program
                                               }
                                               """);
 
-// now let's ask it a question
             chat.AppendUserInput(
                 "Dear students, your exam will take place tomorrow at IB027, from 9am to 10:15am. You may use a calculator. Good luck!");
-// and get the response
-            string response = await chat.GetResponseFromChatbotAsync();
+            var response = await chat.GetResponseFromChatbotAsync();
             Console.WriteLine(response);
 
             while (true)
             {
                 Console.Write("You: ");
-                string user_input = Console.ReadLine();
+                var user_input = Console.ReadLine();
                 chat.AppendUserInput(user_input);
                 response = await chat.GetResponseFromChatbotAsync();
                 Console.WriteLine("Chatbot: " + response);
             }
         }
     }
-
+}
