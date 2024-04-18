@@ -1,4 +1,6 @@
-﻿using OpenAI_API;
+﻿using AiCommunicator;
+using Microsoft.Extensions.Logging;
+using OpenAI_API;
 using OpenAI_API.Chat;
 using OpenAI_API.Models;
 
@@ -6,9 +8,29 @@ namespace ApiTest
 {
     internal class Program
     {
+        private static ILoggerFactory MainLoggerFactory => LoggerFactory.Create(builder =>
+        {
+            builder.AddConsole();
+            builder.SetMinimumLevel(LogLevel.Debug);
+        });
+        
         private static async Task Main(string[] args)
         {
-            await NugetOpenAiApiTest();
+            await OpenaiCalendarEventInterpreterTest();
+        }
+
+        private static async Task OpenaiCalendarEventInterpreterTest()
+        {      
+            // read api key from ~/.openai
+            var key = APIAuthentication.LoadFromPath()?.ApiKey;
+
+            ICalendarEventInterpreter communicator = new OpenaiCalendarEventInterpreter(key!);
+            communicator.Logger = MainLoggerFactory.CreateLogger<OpenaiCalendarEventInterpreter>();
+
+            var json = await communicator.EventToJson(
+                "Dear students, your exam will take place tomorrow at IB027, from 9am to 10:15am. You may use a calculator. Good luck!");
+
+            Console.WriteLine(json.ToString());
         }
 
         private static async Task NugetOpenAiApiTest()

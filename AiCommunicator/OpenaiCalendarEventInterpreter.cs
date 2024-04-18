@@ -1,5 +1,8 @@
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.RegularExpressions;
+using Microsoft.Extensions.Logging;
 
 namespace AiCommunicator
 {
@@ -19,34 +22,54 @@ namespace AiCommunicator
 
         public string ModelName { get; set; }
 
+        public ILogger? Logger { get; set; }
 
         public async Task<JsonObject> EventToJson(string eventText)
         {
             var postBody = CreatePostBody(eventText);
             using var client = new HttpClient();
 
-            using var requestContent = new StringContent(postBody);
-            requestContent.Headers.Add("Authorization", $"Bearer {ApiKey}");
-            requestContent.Headers.Add("api-key", ApiKey);
-            requestContent.Headers.Add("Content-Type", "application/json; charset=utf-8");
-            
-            var response = await client.PostAsync(RequestUrl, requestContent);
+            using var request = new HttpRequestMessage(HttpMethod.Post, RequestUrl);
+            using var requestContent = new StringContent(postBody, Encoding.UTF8, "application/json");
+            request.Headers.Add("Authorization", $"Bearer {ApiKey}");
+            request.Content = requestContent;
+
+            Logger?.Log(LogLevel.Debug, $"Sending request to OpenAI API:\n{request}\n{postBody}");
+            var response = await client.SendAsync(request);
 
             if (!response.IsSuccessStatusCode)
             {
+                Logger?.Log(LogLevel.Error,
+                    $"Failed to get response from OpenAI API to request:\n{request}\n{postBody}");
                 throw new Exception($"Failed to get response from OpenAI API. Status code: {response.StatusCode}");
             }
 
             var responseContent = await response.Content.ReadAsStringAsync();
+            Logger?.Log(LogLevel.Debug, $"Received response from OpenAI API:\n{responseContent}");
+
+            string chatbotReply;
 
             try
             {
-                var json = JsonNode.Parse(responseContent);
-                return json.AsObject();
+                var responseJson = JsonNode.Parse(responseContent);
+                var choice = responseJson["choices"].AsArray()[0];
+                chatbotReply = choice["message"]["content"].ToString();
+            }
+            catch (Exception e)
+            {
+                Logger?.Log(LogLevel.Error, $"Failed to parse response from OpenAI API. Response:\n{responseContent}");
+                throw new Exception("Failed to parse response from OpenAI API.", e);
+            }
+
+            try
+            {
+                var eventJson = JsonNode.Parse(chatbotReply);
+                return eventJson.AsObject();
             }
             catch (JsonException e)
             {
-                throw new Exception($"Failed to parse response from OpenAI API. Response: {responseContent}", e);
+                Logger?.Log(LogLevel.Error, $"Failed to parse JSON from OpenAI API reply. Reply: {chatbotReply}");
+                throw new Exception("Failed to parse JSON from OpenAI API reply.", e);
             }
         }
 
@@ -72,7 +95,7 @@ namespace AiCommunicator
                                     "End": "{{tomorrow6Pm}}",
                                     "Location": "Office"
                                   }
-                                  """;
+                                  """.Replace("\"", "\\\"");
 
             var daysUntilSaturday = ((int)DayOfWeek.Saturday - (int)DateTime.Now.DayOfWeek + 7) % 7;
             var saturday9Am = DateTime.Now.AddDays(daysUntilSaturday).Date.AddHours(9);
@@ -87,72 +110,74 @@ namespace AiCommunicator
                                     "End": "{{saturday12Pm}}"
                                     "Description": "Make sure they eat breakfast and do their homework."
                                   }
-                                  """;
+                                  """.Replace("\"", "\\\"");
 
-            return $$"""
-                     {
-                       "model": "{{ModelName}}",
-                       "messages": [
-                         {
-                           "role": "system",
-                           "content": [
-                             {
-                               "type": "text",
-                               "text": "{{systemContext}}"
-                             }
-                           ]
-                         },
-                         {
-                           "role": "user",
-                           "content": [
-                             {
-                               "type": "text",
-                               "text": "{{example1Prompt}}"
-                             }
-                           ]
-                         },
-                         {
-                           "role": "assistant",
-                           "content": [
-                             {
-                               "type": "text",
-                               "text": "{{example1Reply}}"
-                             }
-                           ]
-                         },
-                         {
-                           "role": "user",
-                           "content": [
-                             {
-                               "type": "text",
-                               "text": "{{example2Prompt}}"
-                             }
-                           ]
-                         },
-                         {
-                           "role": "assistant",
-                           "content": [
-                             {
-                               "type": "text",
-                               "text": "{{example2Reply}}"
-                             }
-                           ]
-                         },
-                         {
-                           "role": "user",
-                           "content": [
-                             {
-                               "type": "text",
-                               "text": "{{eventText}}"
-                             }
-                           ]
-                         }
-                       ],
-                       "temperature": 0,
-                       "n": 1,
-                       "stream": false
-                     }
-                     """;
+            var ret = $$"""
+                        {
+                          "model": "{{ModelName}}",
+                          "messages": [
+                            {
+                              "role": "system",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "{{systemContext}}"
+                                }
+                              ]
+                            },
+                            {
+                              "role": "user",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "{{example1Prompt}}"
+                                }
+                              ]
+                            },
+                            {
+                              "role": "assistant",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "{{example1Reply}}"
+                                }
+                              ]
+                            },
+                            {
+                              "role": "user",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "{{example2Prompt}}"
+                                }
+                              ]
+                            },
+                            {
+                              "role": "assistant",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "{{example2Reply}}"
+                                }
+                              ]
+                            },
+                            {
+                              "role": "user",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "{{eventText}}"
+                                }
+                              ]
+                            }
+                          ],
+                          "temperature": 0,
+                          "n": 1,
+                          "stream": false
+                        }
+                        """;
+            ret = Regex.Replace(ret, @"\s+", " ");
+            return ret;
         }
     }
 }
