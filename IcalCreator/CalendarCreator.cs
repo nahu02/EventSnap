@@ -7,6 +7,24 @@ namespace IcalCreator
 {
     public class CalendarCreator : ICalendarCreator
     {
+        public Calendar CreateIcal(CalendarEventProperties eventProperties)
+        {
+            ArgumentNullException.ThrowIfNull(eventProperties);
+
+            var ical = CalInit();
+            var icalEvent = new CalendarEvent
+            {
+                Summary = eventProperties.Summary,
+                Description = eventProperties.Description,
+                Location = eventProperties.Location,
+                Start = eventProperties.Start != null ? new CalDateTime(DateTime.Parse(eventProperties.Start)) : null,
+                End = eventProperties.End != null ? new CalDateTime(DateTime.Parse(eventProperties.End)) : null
+            };
+
+            ical.Events.Add(icalEvent);
+            return ical;
+        }
+
         /// <summary>
         ///     Create an Ical.Net.Calendar from a JSON object.
         ///     The Calendar will contain a single event.
@@ -33,26 +51,25 @@ namespace IcalCreator
         /// </summary>
         public Calendar CreateIcalFromJson(JsonObject jsonObjectOfEvent)
         {
-            var ical = CalInit();
-            var icalEvent = new CalendarEvent();
-            
+            var eventProps = new CalendarEventProperties();
+
             var propertySetters = new Dictionary<Action<string>, string>
             {
-                { value => icalEvent.Summary = value, "Summary" },
-                { value => icalEvent.Location = value, "Location" },
-                { value => icalEvent.Description = value, "Description" },
-                { value => icalEvent.Start = new CalDateTime(DateTime.Parse(value)), "Start" },
-                { value => icalEvent.End = new CalDateTime(DateTime.Parse(value)), "End" }
+                { value => eventProps.Summary = value, "Summary" },
+                { value => eventProps.Location = value, "Location" },
+                { value => eventProps.Description = value, "Description" },
+                { value => eventProps.Start = value, "Start" },
+                { value => eventProps.End = value, "End" }
             };
 
-            foreach (var pair in propertySetters)
+            foreach (var (setPropertyAction, jsonField) in propertySetters)
             {
-                TrySetProperty(pair.Key, () => jsonObjectOfEvent[pair.Value]?.ToString());
+                TrySetProperty(setPropertyAction, () => jsonObjectOfEvent[jsonField]?.ToString());
             }
 
-            return ical;
+            return CreateIcal(eventProps);
         }
-        
+
         private Calendar CalInit()
         {
             var ical = new Calendar();
