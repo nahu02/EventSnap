@@ -1,6 +1,7 @@
-﻿using EventSnap.Services;
-using EventSnap.ViewModels;
+﻿using DevExpress.Maui;
+using EventSnap.Services;
 using Microsoft.Extensions.Logging;
+
 namespace EventSnap;
 
 public static class MauiProgram
@@ -12,14 +13,14 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+            .UseDevExpress()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             })
             .Services
-                .AddSingleton<SettingsService>()
-                .AddTransient<SettingsViewModel>();
+                .AddSingleton<SettingsService>();
 
         Services = builder.Services.BuildServiceProvider();
 

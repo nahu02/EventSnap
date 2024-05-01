@@ -1,33 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:vm="clr-namespace:EventSnap.ViewModels"
+             xmlns:dxdf="clr-namespace:DevExpress.Maui.DataForm;assembly=DevExpress.Maui.Editors"
+             xmlns:dxe="clr-namespace:DevExpress.Maui.Editors;assembly=DevExpress.Maui.Editors"
              x:Class="EventSnap.SettingsPage"
-             Title="⚙️ Settings">
+             Title="⚙️ Settings" >
 
-    <ContentPage.BindingContext>
-        <vm:SettingsViewModel />
-    </ContentPage.BindingContext>
-
-    <VerticalStackLayout>
-
-        <!--scrollable view that displays a textbox for all properties of Models/AppSettings-->
-        <ScrollView>
-            <StackLayout>
-                <Label Text="OpenAi API Key" Style="{StaticResource Headline}" SemanticProperties.HeadingLevel="Level3"/>
-                <Entry
-                    Text="{Binding OpenAiApiKey, Mode=TwoWay}"
-                    Placeholder="API Key" />
-
-                <Label Text="OpenAi Model" Style="{StaticResource Headline}" SemanticProperties.HeadingLevel="Level3"/>
-                <Picker
-                    SelectedItem="{Binding OpenAiModel, Mode=TwoWay}"
-                    ItemsSource="{Binding OpenAiModels}" />
-
-            </StackLayout>
-            
-        </ScrollView>
-        
-    </VerticalStackLayout>
+    <dxdf:DataFormView x:Name = "dataForm" CommitMode="LostFocus" />
 </ContentPage>
