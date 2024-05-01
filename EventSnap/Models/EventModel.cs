@@ -37,7 +37,7 @@ namespace EventSnap.Models
         [DataFormDisplayOptions(SkipAutoGenerating = true)]
         public DateTime EndDateTime
         {
-            get => new(EndDate.Year, EndDate.Month, EndDate.Day, EndTime.Hour, EndTime.Minute, EndTime.Second);
+            get => new(EndDate.Year, EndDate.Month, EndDate.Day, EndTime.Hour, EndTime.Minute, 0);
             set
             {
                 EndDate = value.Date;
@@ -48,7 +48,7 @@ namespace EventSnap.Models
         [DataFormDisplayOptions(SkipAutoGenerating = true)]
         public DateTime StartDateTime
         {
-            get => new(StartDate.Year, StartDate.Month, StartDate.Day, StartTime.Hour, StartTime.Minute, StartTime.Second);
+            get => new(StartDate.Year, StartDate.Month, StartDate.Day, StartTime.Hour, StartTime.Minute, 0);
             set
             {
                 StartDate = value.Date;

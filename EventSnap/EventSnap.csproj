@@ -64,6 +64,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\..\IcalFromJsonTest\IcalCreator\IcalCreator.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Compile Update="Views\LoadingPage.xaml.cs">
 	    <DependentUpon>LoadingPage.xaml</DependentUpon>
 	  </Compile>

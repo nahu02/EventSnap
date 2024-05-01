@@ -19,7 +19,7 @@ public partial class EventDetailsPage : ContentPage
 
         InitializeComponent();
         dataForm.DataObject = EventModel;
-        dataForm.CommitMode = DevExpress.Maui.DataForm.CommitMode.LostFocus;
+        dataForm.CommitMode = DevExpress.Maui.DataForm.CommitMode.Input;
     }
 
     private void OnSaveButtonClicked(object sender, EventArgs e)
@@ -27,9 +27,10 @@ public partial class EventDetailsPage : ContentPage
         if (dataForm.Validate())
         {
             var task = _icalCreatorService.AddEventToCalendarAsync(EventModel);
-            EventModel = new EventModel();
-
             ShowLoading("Adding event to calendar", task);
+
+            EventModel = new EventModel();
+            dataForm.DataObject = EventModel;
         }
     }
 
