@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:dxdf="clr-namespace:DevExpress.Maui.DataForm;assembly=DevExpress.Maui.Editors"
              xmlns:dxe="clr-namespace:DevExpress.Maui.Editors;assembly=DevExpress.Maui.Editors"
-             x:Class="EventSnap.SettingsPage"
+             x:Class="EventSnap.Views.SettingsPage"
              Title="⚙️ Settings" >
 
-    <dxdf:DataFormView x:Name = "dataForm" CommitMode="LostFocus" />
+    <dxdf:DataFormView x:Name = "dataForm" />
 </ContentPage>

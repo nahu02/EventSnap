@@ -3,18 +3,18 @@
     x:Class="EventSnap.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:EventSnap"
+    xmlns:views="clr-namespace:EventSnap.Views"
     Shell.FlyoutBehavior="Disabled"
     Title="EventSnap">
 
     <ShellContent
-        Title="Settings"
-        ContentTemplate="{DataTemplate local:SettingsPage}"
-        Route="SettingsPage" />
+        Title="EventDetails"
+        ContentTemplate="{DataTemplate views:EventDetailsPage}"
+        Route="EventDetailsPage" />
 
     <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
-    
+        Title="Settings"
+        ContentTemplate="{DataTemplate views:SettingsPage}"
+        Route="SettingsPage" />
+
 </Shell>

@@ -1,7 +1,7 @@
 using EventSnap.Models;
 using EventSnap.Services;
 
-namespace EventSnap;
+namespace EventSnap.Views;
 
 public partial class SettingsPage : ContentPage
 {
@@ -15,5 +15,6 @@ public partial class SettingsPage : ContentPage
         InitializeComponent();
         dataForm.DataObject = new SettingsModel(settingsService);
         dataForm.PickerSourceProvider = new SettingsModel.SettingsComboDataProvider();
+        dataForm.CommitMode = DevExpress.Maui.DataForm.CommitMode.LostFocus;
     }
 }
