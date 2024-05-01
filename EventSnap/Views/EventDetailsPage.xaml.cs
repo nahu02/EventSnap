@@ -7,12 +7,16 @@ public partial class EventDetailsPage : ContentPage
 {
     public EventModel EventModel { get; set; } = new EventModel();
 
-    public EventDetailsPage() : this(MauiProgram.Services.GetRequiredService<SettingsService>())
+    private readonly IcalCreatorService _icalCreatorService;
+
+    public EventDetailsPage() : this(MauiProgram.Services.GetRequiredService<IcalCreatorService>())
     {
     }
 
-    public EventDetailsPage(SettingsService settingsService)
+    public EventDetailsPage(IcalCreatorService icalService)
     {
+        _icalCreatorService = icalService;
+
         InitializeComponent();
         dataForm.DataObject = EventModel;
         dataForm.CommitMode = DevExpress.Maui.DataForm.CommitMode.LostFocus;
@@ -22,7 +26,25 @@ public partial class EventDetailsPage : ContentPage
     {
         if (dataForm.Validate())
         {
-            System.Diagnostics.Debug.WriteLine("DataForm is valid, implement create logic");
+            var task = _icalCreatorService.AddEventToCalendarAsync(EventModel);
+            EventModel = new EventModel();
+
+            ShowLoading("Adding event to calendar", task);
         }
+    }
+
+    private void ShowLoading(string message, Task task)
+    {
+        var loadingPage = new LoadingPage(message);
+
+        Navigation.PushModalAsync(loadingPage);
+
+        task.ContinueWith(t =>
+        {
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                Navigation.PopModalAsync();
+            });
+        });
     }
 }

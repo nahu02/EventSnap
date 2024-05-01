@@ -20,7 +20,8 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             })
             .Services
-                .AddSingleton<SettingsService>();
+                .AddSingleton<SettingsService>()
+                .AddSingleton<IcalCreatorService>();
 
         Services = builder.Services.BuildServiceProvider();
 
