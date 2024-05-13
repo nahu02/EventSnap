@@ -1,8 +1,8 @@
+using Microsoft.Extensions.Logging;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
-using Microsoft.Extensions.Logging;
 
 namespace AiCommunicator
 {
@@ -24,7 +24,7 @@ namespace AiCommunicator
 
         public ILogger? Logger { get; set; }
 
-        public async Task<JsonObject> EventToJson(string eventText)
+        public async Task<JsonObject> EventToJsonAsync(string eventText)
         {
             var postBody = CreatePostBody(eventText);
             using var client = new HttpClient();
@@ -71,6 +71,31 @@ namespace AiCommunicator
                 Logger?.Log(LogLevel.Error, $"Failed to parse JSON from OpenAI API reply. Reply: {chatbotReply}");
                 throw new Exception("Failed to parse JSON from OpenAI API reply.", e);
             }
+        }
+
+        public async Task<IcalCreator.CalendarEventProperties> EventToIcalCreatorEventPropertiesAsync(string eventText)
+        {
+            var eventJson = await EventToJsonAsync(eventText).ConfigureAwait(false);
+            var properties = new IcalCreator.CalendarEventProperties();
+
+            var propertySetters = new Dictionary<string, Action<string>>
+            {
+                { "Summary", value => properties.Summary = value },
+                { "Location", value => properties.Location = value },
+                { "Description", value => properties.Description = value },
+                { "Start", value => properties.Start = value },
+                { "End", value => properties.End = value },
+            };
+
+            foreach (var key in propertySetters.Keys)
+            {
+                if (eventJson.ContainsKey(key))
+                {
+                    propertySetters[key](eventJson[key].ToString());
+                }
+            }
+
+            return properties;
         }
 
         private string CreatePostBody(string eventText)
