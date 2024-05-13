@@ -11,7 +11,7 @@
         Title="EventDetails"
         ContentTemplate="{DataTemplate views:EventDetailsPage}"
         Route="EventDetailsPage" />
-
+    
     <ShellContent
         Title="Settings"
         ContentTemplate="{DataTemplate views:SettingsPage}"

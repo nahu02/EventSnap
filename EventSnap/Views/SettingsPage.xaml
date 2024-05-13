@@ -6,5 +6,13 @@
              x:Class="EventSnap.Views.SettingsPage"
              Title="⚙️ Settings" >
 
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Save" Clicked="OnSaveClicked" />
+    </ContentPage.ToolbarItems>
+
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsVisible="False" />
+    </Shell.BackButtonBehavior>
+
     <dxdf:DataFormView x:Name = "dataForm" />
 </ContentPage>

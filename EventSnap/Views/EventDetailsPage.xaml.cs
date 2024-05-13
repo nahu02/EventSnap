@@ -22,6 +22,11 @@ public partial class EventDetailsPage : ContentPage
         dataForm.CommitMode = DevExpress.Maui.DataForm.CommitMode.Input;
     }
 
+    private async void OnSettingsClicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync("//SettingsPage", animate: true);
+    }
+
     private void OnSaveButtonClicked(object sender, EventArgs e)
     {
         if (dataForm.Validate())

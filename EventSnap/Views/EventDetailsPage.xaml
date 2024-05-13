@@ -6,6 +6,11 @@
              x:Class="EventSnap.Views.EventDetailsPage"
              Title="📆 Event Details" >
 
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Settings" Clicked="OnSettingsClicked" />
+    </ContentPage.ToolbarItems>
+
     <ScrollView>
         <StackLayout>
             <dxdf:DataFormView

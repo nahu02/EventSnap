@@ -17,4 +17,9 @@ public partial class SettingsPage : ContentPage
         dataForm.PickerSourceProvider = new SettingsModel.SettingsComboDataProvider();
         dataForm.CommitMode = DevExpress.Maui.DataForm.CommitMode.LostFocus;
     }
+
+    private async void OnSaveClicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync("//EventDetailsPage", animate: true);
+    }
 }
