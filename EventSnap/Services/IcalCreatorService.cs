@@ -26,7 +26,7 @@ namespace EventSnap.Services
 
         private async Task openIcsFile(string file, string openRequestTitle = "")
         {
-            Launcher.Default.OpenAsync(new OpenFileRequest(openRequestTitle, new ReadOnlyFile(file)));
+            await Launcher.Default.OpenAsync(new OpenFileRequest(openRequestTitle, new ReadOnlyFile(file))).ConfigureAwait(false);
         }
 
         private async Task<string> createIcsFileFromCalendarAsync(Calendar calendar, string fileName)

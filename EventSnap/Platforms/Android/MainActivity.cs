@@ -2,7 +2,7 @@
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
-using Android.Widget;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace EventSnap;
 
@@ -12,7 +12,7 @@ namespace EventSnap;
     LaunchMode = LaunchMode.SingleTask,
     ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)
     ]
-[IntentFilter(new[] { Intent.ActionSend },
+[IntentFilter(new[] { Intent.ActionSend, Intent.ActionView },
     Categories = new[]
     {
         Intent.CategoryDefault,
@@ -40,8 +40,7 @@ public class MainActivity : MauiAppCompatActivity
         {
             var sharedText = intent.GetStringExtra(Intent.ExtraText);
 
-            // TODO: Handle shared text
-            Toast.MakeText(this, $"Shared Text: {sharedText}", ToastLength.Long).Show();
+            WeakReferenceMessenger.Default.Send(sharedText);
         }
     }
 }

@@ -21,7 +21,8 @@ public static class MauiProgram
             })
             .Services
                 .AddSingleton<SettingsService>()
-                .AddSingleton<IcalCreatorService>();
+                .AddSingleton<IcalCreatorService>()
+                .AddSingleton<AiCommunicatorService>();
 
         Services = builder.Services.BuildServiceProvider();
 

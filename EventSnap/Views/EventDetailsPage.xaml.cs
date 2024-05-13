@@ -1,3 +1,4 @@
+using CommunityToolkit.Mvvm.Messaging;
 using EventSnap.Models;
 using EventSnap.Services;
 
@@ -5,7 +6,12 @@ namespace EventSnap.Views;
 
 public partial class EventDetailsPage : ContentPage
 {
-    public EventModel EventModel { get; set; } = new EventModel();
+    public EventModel EventModel
+    {
+        get => (EventModel)dataForm.DataObject;
+        set => dataForm.DataObject = value;
+
+    }
 
     private readonly IcalCreatorService _icalCreatorService;
 
@@ -18,9 +24,29 @@ public partial class EventDetailsPage : ContentPage
         _icalCreatorService = icalService;
 
         InitializeComponent();
-        dataForm.DataObject = EventModel;
+
+        EventModel = new EventModel();
         dataForm.CommitMode = DevExpress.Maui.DataForm.CommitMode.Input;
+
+        WeakReferenceMessenger.Default.Register<string>(this, (_, msg) => OnSharedTextReceivedAsync(msg));
     }
+
+    public async Task OnSharedTextReceivedAsync(string sharedText)
+    {
+        try
+        {
+            var task = MauiProgram.Services.GetRequiredService<AiCommunicatorService>().GetEventFromNaturalLanguageTextAsync(sharedText);
+            ShowLoading("Processing event", task);
+            EventModel = await task;
+        }
+        catch (AggregateException e)
+        {
+            await DisplayAlert("Problem with processing the event", e.Message, "OK");
+        }
+
+        System.Diagnostics.Debug.WriteLine($"Event!\n\tTitle: {EventModel.Title}\n\tDescription: {EventModel.Description}\n\tLocation: {EventModel.Location}\n\tStart: {EventModel.StartDateTime}\n\tEnd: {EventModel.EndDateTime}");
+    }
+
 
     private async void OnSettingsClicked(object sender, EventArgs e)
     {

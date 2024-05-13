@@ -35,7 +35,7 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\snap_nobg.png" ForegroundFile="Resources\AppIcon\snap_nobg.png" Color="#F6AB00"/>
+		<MauiIcon Include="Resources\AppIcon\snap_nobg.png" ForegroundFile="Resources\AppIcon\snap_nobg.png" Color="#F6AB00" />
 
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#F6AB00" BaseSize="128,128" />
@@ -62,6 +62,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\IcalFromJsonTest\IcalCreator\IcalCreator.csproj" />
+	  <ProjectReference Include="..\..\OpenAiApiTest\AiCommunicator\AiCommunicator.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
