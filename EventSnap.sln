@@ -5,9 +5,9 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventSnap", "EventSnap\EventSnap.csproj", "{60A49245-B410-4F05-975E-8AA766E00392}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IcalCreator", "..\IcalFromJsonTest\IcalCreator\IcalCreator.csproj", "{472411DD-F243-4ECD-9CB1-76F953A6445B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IcalCreator", "IcalCreator\IcalCreator.csproj", "{472411DD-F243-4ECD-9CB1-76F953A6445B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AiCommunicator", "..\OpenAiApiTest\AiCommunicator\AiCommunicator.csproj", "{CEFE3579-063A-46B0-ABBF-A61C8B33B8C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AiCommunicator", "AiCommunicator\AiCommunicator.csproj", "{CEFE3579-063A-46B0-ABBF-A61C8B33B8C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
