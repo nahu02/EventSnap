@@ -6,8 +6,15 @@ using System.Text.RegularExpressions;
 
 namespace AiCommunicator
 {
+    /// <summary>
+    /// Represents an implementation of <see cref="ICalendarEventInterpreter"/> that uses the OpenAI API to interpret event text.
+    /// </summary>
     public class OpenaiCalendarEventInterpreter : ICalendarEventInterpreter
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OpenaiCalendarEventInterpreter"/> class.
+        /// </summary>
+        /// <param name="apiKey">The API key for accessing the OpenAI API.</param>
         public OpenaiCalendarEventInterpreter(string apiKey)
         {
             ApiKey = apiKey;
@@ -16,14 +23,33 @@ namespace AiCommunicator
         }
 
 
+        /// <summary>
+        /// Gets or sets the API key used for authentication.
+        /// </summary>
         public string ApiKey { private get; set; }
 
+        /// <summary>
+        /// Gets or sets the URL that requests are sent to.
+        /// </summary>
         public string RequestUrl { get; set; }
 
+        /// <summary>
+        /// Gets or sets the name of the model used.
+        /// </summary>
         public string ModelName { get; set; }
 
+        /// <summary>
+        /// Gets or sets the logger used for logging events in the OpenaiCalendarEventInterpreter class.
+        /// If not set, no logging is performed.
+        /// </summary>
         public ILogger? Logger { get; set; }
 
+        /// <summary>
+        /// Interprets the given event text and returns the event as a <see cref="JsonObject"/> by using an OpenAI LLM.
+        /// </summary>
+        /// <param name="eventText">The event text to convert.</param>
+        /// <returns>A <see cref="JsonObject"/> representing the converted event.</returns>
+        /// <exception cref="Exception">Thrown if there is an error in communicating with the API or parsing the response.</exception>
         public async Task<JsonObject> EventToJsonAsync(string eventText)
         {
             var postBody = CreatePostBody(eventText);
@@ -73,6 +99,12 @@ namespace AiCommunicator
             }
         }
 
+        /// <summary>
+        /// Interprets the given event text and returns the event as an instance of <see cref="IcalCreator.CalendarEventProperties"/> by using an OpenAI LLM.
+        /// </summary>
+        /// <param name="eventText">The event text to convert.</param>
+        /// <returns>An instance of <see cref="IcalCreator.CalendarEventProperties"/> representing the converted event.</returns>
+        /// <exception cref="Exception">Thrown if there is an error in communicating with the API or parsing the response.</exception>
         public async Task<IcalCreator.CalendarEventProperties> EventToIcalCreatorEventPropertiesAsync(string eventText)
         {
             var eventJson = await EventToJsonAsync(eventText).ConfigureAwait(false);
@@ -98,6 +130,13 @@ namespace AiCommunicator
             return properties;
         }
 
+        /// <summary>
+        /// Creates the body of the POST request to the OpenAI API for interpreting the event text.
+        /// Includes a system context message and two example prompts and replies.
+        /// The event text is included as the last user message.
+        /// </summary>
+        /// <param name="eventText">The event text to include in the request body.</param>
+        /// <returns>The body of the POST request as a string.</returns>
         private string CreatePostBody(string eventText)
         {
             var systemContext = """
