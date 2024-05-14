@@ -4,6 +4,10 @@ using EventSnap.Services;
 
 namespace EventSnap.Views;
 
+/// <summary>
+/// Represents a page that displays the details of an event.
+/// It also shows a Save button to add the event to the calendar, using the IcalCreatorService.
+/// </summary>
 [QueryProperty(nameof(SharedText), "sharedText")]
 public partial class EventDetailsPage : ContentPage
 {
@@ -21,10 +25,18 @@ public partial class EventDetailsPage : ContentPage
 
     private readonly IcalCreatorService _icalCreatorService;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="EventDetailsPage"/> class.
+    /// Gets the IcalCreatorService from the service provider.
+    /// </summary>
     public EventDetailsPage() : this(MauiProgram.Services.GetRequiredService<IcalCreatorService>())
     {
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="EventDetailsPage"/> class.
+    /// </summary>
+    /// <param name="icalService">The IcalCreatorService instance.</param>
     public EventDetailsPage(IcalCreatorService icalService)
     {
         _icalCreatorService = icalService;
@@ -37,6 +49,13 @@ public partial class EventDetailsPage : ContentPage
         WeakReferenceMessenger.Default.Register<string>(this, (_, msg) => SharedText = msg);
     }
 
+    /// <summary>
+    /// Handles the event when shared text is received.
+    /// Calls the AiCommunicatorService to process the shared text and get an event model, which is then displayed.
+    /// A <see cref="LoadingPage"/> is shown while the event is being processed.
+    /// </summary>
+    /// <param name="sharedText">The shared text received.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     private async Task OnSharedTextReceivedAsync(string sharedText)
     {
         try
@@ -54,11 +73,23 @@ public partial class EventDetailsPage : ContentPage
     }
 
 
+    /// <summary>
+    /// Event handler for the settings button click event.
+    /// Navigates to the SettingsPage.
+    /// </summary>
+    /// <param name="sender">The object that raised the event.</param>
+    /// <param name="e">The event arguments.</param>
     private async void OnSettingsClicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("//SettingsPage", animate: true);
     }
 
+    /// <summary>
+    /// Event handler for the save button click event.
+    /// Calls the IcalCreatorService to add the event to the calendar.
+    /// </summary>
+    /// <param name="sender">The object that raised the event.</param>
+    /// <param name="e">The event arguments.</param>
     private void OnSaveButtonClicked(object sender, EventArgs e)
     {
         if (dataForm.Validate())
@@ -71,6 +102,11 @@ public partial class EventDetailsPage : ContentPage
         }
     }
 
+    /// <summary>
+    /// Displays a <see cref="LoadingPage"/> with the specified message while the task is running.
+    /// </summary>
+    /// <param name="message">The message to display on the loading page.</param>
+    /// <param name="task">The task that determines when the loading page should be removed.</param>
     private void ShowLoading(string message, Task task)
     {
         var loadingPage = new LoadingPage(message);

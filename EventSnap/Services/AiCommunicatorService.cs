@@ -3,6 +3,9 @@ using EventSnap.Models;
 
 namespace EventSnap.Services
 {
+    /// <summary>
+    /// Represents a service that communicates with an AI provider to interpret natural language text and extract event information.
+    /// </summary>
     public class AiCommunicatorService
     {
         private readonly SettingsService _settingsService;
@@ -15,11 +18,20 @@ namespace EventSnap.Services
             }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AiCommunicatorService"/> class.
+        /// </summary>
+        /// <param name="settingsService">The settings service.</param>
         public AiCommunicatorService(SettingsService settingsService)
         {
             _settingsService = settingsService;
         }
 
+        /// <summary>
+        /// Extract event information from natural language text.
+        /// </summary>
+        /// <param name="naturalLanguageText">The natural language text representing the event.</param>
+        /// <returns>An asynchronous task that represents the operation. The task result contains the event model.</returns>
         public async Task<EventModel> GetEventFromNaturalLanguageTextAsync(string naturalLanguageText)
         {
             ArgumentNullException.ThrowIfNull(naturalLanguageText);
@@ -32,6 +44,9 @@ namespace EventSnap.Services
 
         }
 
+        /// <summary>
+        /// Converts an <see cref="IcalCreator.CalendarEventProperties"/> object to an <see cref="EventModel"/> object.
+        /// </summary>
         private EventModel EventModelFromEventProperties(IcalCreator.CalendarEventProperties eventProperties)
         {
             ArgumentNullException.ThrowIfNull(eventProperties);

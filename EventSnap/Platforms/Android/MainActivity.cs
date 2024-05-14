@@ -33,6 +33,13 @@ public class MainActivity : MauiAppCompatActivity
         HandleIntent(intent);
     }
 
+    /// <summary>
+    /// Handles the incoming intent if the application was already running when the intent was received.
+    /// It should not be called if the application was started by the intent.
+    /// 
+    /// If the intent is an ACTION_SEND with a MIME type of "text/plain", the shared text is sent to the application using <see cref="WeakReferenceMessenger.Default"/>.
+    /// </summary>
+    /// <param name="intent">The incoming intent.</param>
     private void HandleIntent(Intent intent)
     {
         if (intent.Action == Intent.ActionSend && "text/plain".Equals(intent.Type))

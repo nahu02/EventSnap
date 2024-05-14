@@ -55,6 +55,11 @@ public static class MauiProgram
         return builder.Build();
     }
 
+    /// <summary>
+    /// Handles the shared text data by navigating to the EventDetailsPage with the shared text as a parameter.
+    /// Assumes that the MainPage is an AppShell, and throws an exception if it is not.
+    /// </summary>
+    /// <param name="data">The shared text data.</param>
     private static async void HandleSharedText(string data)
     {
         if (App.Current?.MainPage is AppShell shell)

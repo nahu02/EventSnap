@@ -3,6 +3,9 @@ using EventSnap.Services;
 
 namespace EventSnap.Models
 {
+    /// <summary>
+    /// Represents the settings model for the application.
+    /// </summary>
     public class SettingsModel
     {
         [DataFormDisplayOptions(LabelText = "OpenAI API Key", GroupName = "OpenAI", LabelPosition = DataFormLabelPosition.Top)]
@@ -27,9 +30,19 @@ namespace EventSnap.Models
             _settingsService = settingsService;
         }
 
+        /// <summary>
+        /// Provides the data source for the picker control in the settings model.
+        /// </summary>
         public class SettingsComboDataProvider : IPickerSourceProvider
         {
-            System.Collections.IEnumerable IPickerSourceProvider.GetSource(string propertyName)
+            /// <summary>
+            /// Gets the data source for <see cref="OpenAiModelToUse"/>. 
+            /// For that property, it returns a list of available OpenAI text models.
+            /// For any other property, it throws a <see cref="NotImplementedException"/>.
+            /// </summary>
+            /// <param name="propertyName">The name of the property. (Expected: "OpenAiModelToUse")</param>
+            /// <returns>The data source for the specified property.</returns>
+            public System.Collections.IEnumerable GetSource(string propertyName)
             {
                 if (propertyName == nameof(OpenAiModelToUse))
                 {

@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EventSnap.Models
 {
+    /// <summary>
+    /// Represents the model for an event.
+    /// </summary>
     public class EventModel
     {
         [DataFormDisplayOptions(LabelPosition = DataFormLabelPosition.Top)]
@@ -34,6 +37,10 @@ namespace EventSnap.Models
 
 
 
+        /// <summary>
+        /// A calculated property that combines the StartDate and StartTime properties into a single DateTime property.
+        /// It is not displayed on the data form.
+        /// </summary>
         [DataFormDisplayOptions(SkipAutoGenerating = true)]
         public DateTime EndDateTime
         {
@@ -45,6 +52,10 @@ namespace EventSnap.Models
             }
         }
 
+        /// <summary>
+        /// A calculated property that combines the EndDate and EndTime properties into a single DateTime property.
+        /// It is not displayed on the data form.
+        /// </summary>
         [DataFormDisplayOptions(SkipAutoGenerating = true)]
         public DateTime StartDateTime
         {
