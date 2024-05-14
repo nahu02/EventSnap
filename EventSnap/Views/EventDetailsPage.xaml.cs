@@ -4,6 +4,7 @@ using EventSnap.Services;
 
 namespace EventSnap.Views;
 
+[QueryProperty(nameof(SharedText), "sharedText")]
 public partial class EventDetailsPage : ContentPage
 {
     public EventModel EventModel
@@ -11,6 +12,11 @@ public partial class EventDetailsPage : ContentPage
         get => (EventModel)dataForm.DataObject;
         set => dataForm.DataObject = value;
 
+    }
+
+    public string SharedText
+    {
+        set => OnSharedTextReceivedAsync(value);
     }
 
     private readonly IcalCreatorService _icalCreatorService;
@@ -28,10 +34,10 @@ public partial class EventDetailsPage : ContentPage
         EventModel = new EventModel();
         dataForm.CommitMode = DevExpress.Maui.DataForm.CommitMode.Input;
 
-        WeakReferenceMessenger.Default.Register<string>(this, (_, msg) => OnSharedTextReceivedAsync(msg));
+        WeakReferenceMessenger.Default.Register<string>(this, (_, msg) => SharedText = msg);
     }
 
-    public async Task OnSharedTextReceivedAsync(string sharedText)
+    private async Task OnSharedTextReceivedAsync(string sharedText)
     {
         try
         {
