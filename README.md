@@ -6,7 +6,7 @@ EventSnap is an Android application that processes events described by natural l
 
 - **Simplicity**: Use Android's share function to process events with Natural Language Processing.
 - **User-friendly Interface**: Intuitive UI to customize your events before adding them to your calendar.
-- **Calendar Integration**: All calendar apps installed on zour device are available. You can select which calendar you want the event to be added to.
+- **Calendar Integration**: You can select which calendar you want the event to be added to. All calendar apps installed on your device are available.
 
 ## Getting Started
 
