@@ -61,8 +61,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\IcalFromJsonTest\IcalCreator\IcalCreator.csproj" />
-	  <ProjectReference Include="..\..\OpenAiApiTest\AiCommunicator\AiCommunicator.csproj" />
+	  <ProjectReference Include="..\IcalCreator\IcalCreator.csproj" />
+	  <ProjectReference Include="..\AiCommunicator\AiCommunicator.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

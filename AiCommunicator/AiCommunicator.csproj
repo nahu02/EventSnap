@@ -11,7 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\IcalFromJsonTest\IcalCreator\IcalCreator.csproj" />
+      <ProjectReference Include="..\IcalCreator\IcalCreator.csproj" />
     </ItemGroup>
 
 </Project>
